@@ -2,6 +2,23 @@
 
 Learn how to test your React/Redux app thoroughly, including actions, reducers and components! (https://academy.plot.ly/react/6-testing/)
 
+## Existing project
+### Install Jest using npm
+```
+npm install --save-dev jest
+```
+
+## Project from scratch
+Thankfully, **create-react-app** comes with it installed by default so we won’t need to do any setup! Simply enter npm run test into your terminal to run the tests we’ll write below.
+### Installing Create-React-App
+```
+npm install -g create-react-app
+```
+### Installing Create-React-App
+```
+create-react-app <project_name>
+```
+
 ## Unit testing
 Unit testing is the practice of testing the smallest possible units of our code. In JavaScript, those are functions. We run our tests and automatically verify that our functions do the thing we expect them to do. We assert that, given a set of inputs, our functions return the proper values and handle problems.
 
