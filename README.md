@@ -67,7 +67,7 @@ Ran all test suites matching /src/tests/add.test.js/.
 
 ```
 ## Redux
-### Basic (Testing a Action)
+### Basic (Testing Actions)
 1. We are going to create a new file called **src/actions/changeLocation.js**, this file should have a pure function, like this:
 ```
 src/actions/changeLocation.js
@@ -85,7 +85,7 @@ export const SET_SELECTED_DATE = 'SET_SELECTED_DATE'
 export const SET_SELECTED_TEMP = 'SET_SELECTED_TEMP'
 
 ```
-3. Now, we have to create a test action file, **src/actions/changeLocation.js**, and we are going to verify it type and if recive a external variable and pass into it. Thats mean make a one suite with two unit tests.
+3. Now, we have to create a test action file, **src/tests/action.test.js**, and we are going to verify it type and if recive a external variable and pass into it. Thats mean make a one suite with two unit tests.
 ```
 describe('changeLocation', () => {
         it('should have a type of "CHANGE_LOCATION"', () => {
@@ -130,3 +130,107 @@ Watch Usage
  › Press q to quit watch mode.
  › Press Enter to trigger a test run.
 ```
+
+### Basic (Testing Reducers)
+1. We are going to use a usefull tool to manage our data structures. It is called immutable
+
+__immutable:__ Immutable.js provides many Persistent Immutable data structures including: List, Stack, Map, OrderedMap, Set, OrderedSet and Record.
+
+These data structures are highly efficient on modern JavaScript VMs by using structural sharing via hash maps tries and vector tries as popularized by Clojure and Scala, minimizing the need to copy or cache data.
+
+Immutable also provides a lazy Seq, allowing efficient chaining of collection methods like map and filter without creating intermediate representations. Create some Seq with Range and Repeat.
+
+Install **immutable** using npm
+ ```
+ npm install immutable --save
+ ```
+
+ 2. Once we have immutable installed, we are going to create our first reducer. For that, we have to create a reducers file that contain a pure function, that it will be exported. In order to mantein a good project structure, we should to create a new folder **src/reducers/mainReducer.js**
+ ```
+ export default function mainReducer(state = initialState, action) {
+  switch (action.type) {
+    case 'CHANGE_LOCATION':
+      return state.set('location', action.location);
+    case 'SET_DATA':
+      return state.set('data', fromJS(action.data));
+    case 'SET_DATES':
+      return state.set('dates', fromJS(action.dates));
+    case 'SET_TEMPS':
+      return state.set('temps', fromJS(action.temps));
+    case 'SET_SELECTED_DATE':
+      return state.setIn(['selected', 'date'], action.date);
+    case 'SET_SELECTED_TEMP':
+      return state.setIn(['selected', 'temp'], action.temp);
+    default:
+      return state;
+  }
+}
+ ```
+
+ 3. Now, we have to create a test reducer file, **src/tests/reducer.test.js**, and we are going to verify if return a initial state, if react to an action with the type CHANGE_LOCATION and another little more things.
+  ```
+  describe('mainReducer', () => {
+
+    it('should return a initial state', () => {
+        expect(mainReducer(undefined, {})).toEqual(fromJS(initialState))
+    });
+
+    it('should react to an action with the type CHANGE_LOCATION', () => {
+        let location = 'Bogotá'
+        expect(mainReducer(undefined, {
+            type: 'CHANGE_LOCATION',
+            location: location
+        }))
+        .toEqual(fromJS({
+            location: location,
+            data: {},
+            dates: [],
+            temps: [],
+            selected: {
+                date: '',
+                temp: null
+            }
+        }))
+    });
+  });
+  ```
+
+  4. Finally, just we have to run the command **npm run test -- --verbose** and we can see all unit tests, it describe each one, sometihing like this:
+  ```
+   PASS  src/tests/add.test.js (6.202s)
+  add()
+    ✓ adds two numbers (7ms)
+    ✓ doesnt add the third number (1ms)
+
+ PASS  src/tests/actions.test.js
+  actions
+    changeLocation
+      ✓ should have a type of "CHANGE_LOCATION" (3ms)
+      ✓ should pass on the location we pass in (2ms)
+    setSelectedDate
+      ✓ should have a type of SET_SELECTED_DATE (2ms)
+      ✓ should pass on the date we pass in (1ms)
+    setSelectedTemp
+      ✓ should have a type of SET_SELECTED_TEMP (2ms)
+      ✓ should pass on the temp we pass in (1ms)
+
+ PASS  src/tests/reducer.test.js
+  mainReducer
+    ✓ should return a initial state (7ms)
+    ✓ should react to an action with the type CHANGE_LOCATION (2ms)
+    ✓ should react to an action with the type SET_DATES (3ms)
+
+Test Suites: 3 passed, 3 total
+Tests:       11 passed, 11 total
+Snapshots:   0 total
+Time:        20.144s
+Ran all test suites related to changed files.
+
+Watch Usage
+ › Press a to run all tests.
+ › Press p to filter by a filename regex pattern.
+ › Press t to filter by a test name regex pattern.
+ › Press q to quit watch mode.
+ › Press Enter to trigger a test run.
+
+  ```
