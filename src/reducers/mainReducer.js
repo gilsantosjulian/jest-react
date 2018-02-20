@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 
-var initialState = {
+const initialState = fromJS({
     location: '',
     data: {},
     dates: [],
@@ -9,7 +9,7 @@ var initialState = {
         date: '',
         temp: null
     }
-}
+})
 
 export default function mainReducer(state = initialState, action) {
     switch (action.type) {

@@ -85,7 +85,7 @@ export const SET_SELECTED_DATE = 'SET_SELECTED_DATE'
 export const SET_SELECTED_TEMP = 'SET_SELECTED_TEMP'
 
 ```
-3. Now, we have to create a test action file, **src/actions/changeLocation.js**, and we are going to verify it type and if recive a external variable and pass into it. Thats mean make a one suite with two unit tests.
+3. Now, we have to create a test action file, **src/tests/action.test.js**, and we are going to verify it type and if recive a external variable and pass into it. Thats mean make a one suite with two unit tests.
 ```
 describe('changeLocation', () => {
         it('should have a type of "CHANGE_LOCATION"', () => {
@@ -166,3 +166,71 @@ Install **immutable** using npm
   }
 }
  ```
+
+ 3. Now, we have to create a test reducer file, **src/tests/reducer.test.js**, and we are going to verify if return a initial state, if react to an action with the type CHANGE_LOCATION and another little more things.
+  ```
+  describe('mainReducer', () => {
+
+    it('should return a initial state', () => {
+        expect(mainReducer(undefined, {})).toEqual(fromJS(initialState))
+    });
+
+    it('should react to an action with the type CHANGE_LOCATION', () => {
+        let location = 'Bogotá'
+        expect(mainReducer(undefined, {
+            type: 'CHANGE_LOCATION',
+            location: location
+        }))
+        .toEqual(fromJS({
+            location: location,
+            data: {},
+            dates: [],
+            temps: [],
+            selected: {
+                date: '',
+                temp: null
+            }
+        }))
+    });
+  });
+  ```
+
+  4. Finally, just we have to run the command **npm run test -- --verbose** and we can see all unit tests, it describe each one, sometihing like this:
+  ```
+   PASS  src/tests/add.test.js (6.202s)
+  add()
+    ✓ adds two numbers (7ms)
+    ✓ doesnt add the third number (1ms)
+
+ PASS  src/tests/actions.test.js
+  actions
+    changeLocation
+      ✓ should have a type of "CHANGE_LOCATION" (3ms)
+      ✓ should pass on the location we pass in (2ms)
+    setSelectedDate
+      ✓ should have a type of SET_SELECTED_DATE (2ms)
+      ✓ should pass on the date we pass in (1ms)
+    setSelectedTemp
+      ✓ should have a type of SET_SELECTED_TEMP (2ms)
+      ✓ should pass on the temp we pass in (1ms)
+
+ PASS  src/tests/reducer.test.js
+  mainReducer
+    ✓ should return a initial state (7ms)
+    ✓ should react to an action with the type CHANGE_LOCATION (2ms)
+    ✓ should react to an action with the type SET_DATES (3ms)
+
+Test Suites: 3 passed, 3 total
+Tests:       11 passed, 11 total
+Snapshots:   0 total
+Time:        20.144s
+Ran all test suites related to changed files.
+
+Watch Usage
+ › Press a to run all tests.
+ › Press p to filter by a filename regex pattern.
+ › Press t to filter by a test name regex pattern.
+ › Press q to quit watch mode.
+ › Press Enter to trigger a test run.
+
+  ```
