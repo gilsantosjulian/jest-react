@@ -234,3 +234,24 @@ Watch Usage
  › Press Enter to trigger a test run.
 
   ```
+### Basic (Testing Components)
+
+#### Setup
+To render the components without opening a browser we’ll have to install the **react-test-renderer**. It allows us to render the component to a JSON object!.
+```
+npm install --save-dev react-test-renderer
+```
+
+1. Let's create a new file called **App.test.js** and add the new code to test. We will to use the App component, so we going to import it:
+
+```
+import React from 'react';
+import renderer from 'react-test-renderer';
+import App from '../App';
+
+describe('components', () => {
+  describe('<App>', () => {
+    
+  })
+})
+```
