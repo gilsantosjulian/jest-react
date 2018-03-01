@@ -246,7 +246,6 @@ npm install --save-dev react-test-renderer
 
 ```
 import React from 'react';
-import renderer from 'react-test-renderer';
 import App from '../App';
 
 describe('components', () => {
@@ -255,3 +254,84 @@ describe('components', () => {
   })
 })
 ```
+
+2. Now we have to render the component without make use of browser, for that we have ti use **react-test-render** library in order to render the component. It allow us to render the component to a JSON object.
+```
+npm install --save react-test-render
+```
+And import it, in the test file. 
+
+3. After that we create a basic suit of component test, where we have to verify is it renders without throwing error and taking a snapshot we know when the output changes.
+```
+import React from 'react';
+import renderer from 'react-test-renderer';
+import App from '../App';
+
+describe('components', () => {
+    describe('<App>', () => {
+
+        it('render correctly', () => {
+            var tree = renderer.create(<App />).toJSON();
+            expect(tree).toMatchSnapshot();
+        })
+    })
+})
+```
+
+4. Run the command test:
+```
+npm run test -- src/tests/App.test.js
+// or
+npm run test -- verbose
+// or simply
+npm run test
+```
+
+5. Now try changing the text in the App component and run npm run test again. We should see a new error.
+```
+// App.js
+export default class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">Welcome to React</h1>
+        </header>
+        <p className="App-intro">
+          To get started, edit <code>src/App.js</code> and save to reload.
+        </p>
+      </div>
+    );
+  }
+}
+```
+```
+npm run test -- src/tests/App.test.js
+
+Snapshot Summary
+ › 1 snapshot test failed in 1 test suite. Inspect your code changes or press `u` to update them.
+
+
+● components › <App> › render correctly
+
+    expect(value).toMatchSnapshot()
+
+    Received value does not match stored snapshot 1.
+
+    - Snapshot
+    + Received
+
+    @@ -20,8 +20,8 @@
+       >
+         To get started, edit
+         <code>
+           src/App.js
+         </code>
+    -     and save to reload.
+    +     and save to reload Julian.
+       </p>
+     </div>
+
+```
+Awesome, Jest caught the changes in the output of our App component and immediately notified us of a potential error! If we wanted to make this the correct text, all we would have to do is run **npm run test -- -u** (-u stands for “update snapshots”) and Jest would recognize this output as the correct one!
