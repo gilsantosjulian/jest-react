@@ -335,3 +335,11 @@ Snapshot Summary
 
 ```
 Awesome, Jest caught the changes in the output of our App component and immediately notified us of a potential error! If we wanted to make this the correct text, all we would have to do is run **npm run test -- -u** (-u stands for “update snapshots”) and Jest would recognize this output as the correct one!
+
+### Renunning Tests on changes
+Can be a little annoying make changes and run *test* command again. Jest come with a good feature tha allow us to rerunning the test with the *watch* mode. This feature will check new changes and run the test once more time.
+To run it in watch mode, you can run npm **test -- --watch**. Anything you pass to npm test after the first -- will be passed straight through to the underlying command. This means that these two commands are effectively equivalent:
+```
+npm test -- --watch
+jest --watch
+```
